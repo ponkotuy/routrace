@@ -1,73 +1,50 @@
-# Welcome to your Lovable project
+# Routrace
 
-## Project info
+日本の高速道路を地図上で可視化するWebアプリケーションです。
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## 機能
 
-## How can I edit this code?
+- 高速道路の路線を地図上に表示
+- 複数路線の選択・表示切り替え
+- 日本の海岸線の表示/非表示
+- 地図画像のエクスポート
+- モバイル対応のレスポンシブデザイン
 
-There are several ways of editing your application.
+## 技術スタック
 
-**Use Lovable**
+- **フレームワーク**: React 18 + TypeScript
+- **ビルドツール**: Vite
+- **UIライブラリ**: shadcn/ui + Tailwind CSS
+- **地図**: Leaflet / react-leaflet
+- **状態管理**: React Query
+- **ルーティング**: React Router
+- **テスト**: Vitest
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+## セットアップ
 
-Changes made via Lovable will be committed automatically to this repo.
+```bash
+# 依存関係のインストール
+npm install
 
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# 開発サーバーの起動
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+## スクリプト
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+| コマンド | 説明 |
+|---------|------|
+| `npm run dev` | 開発サーバーを起動 |
+| `npm run build` | 本番用ビルド |
+| `npm run preview` | ビルド結果のプレビュー |
+| `npm run lint` | ESLintによるコードチェック |
+| `npm run test` | テストの実行 |
+| `npm run test:watch` | テストをウォッチモードで実行 |
 
-**Use GitHub Codespaces**
+## データソース
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+地図データは [routrace-data](https://github.com/ponkotuy/routrace-data) から取得しています。
 
-## What technologies are used for this project?
+## ライセンス
 
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+地図データは OpenStreetMap contributors のデータを使用しています。
