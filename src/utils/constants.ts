@@ -1,10 +1,18 @@
 export const API_BASE_URL = 'https://ponkotuy.github.io/routrace-data';
+export const LOCAL_DATA_PATH = '/data';
 
 export const ENDPOINTS = {
   coastline: `${API_BASE_URL}/coastline.json`,
   highwaysIndex: `${API_BASE_URL}/highways/index.json`,
   highway: (id: string) => `${API_BASE_URL}/highways/${id}.json`,
   metadata: `${API_BASE_URL}/metadata.json`,
+} as const;
+
+export const LOCAL_ENDPOINTS = {
+  coastline: `${LOCAL_DATA_PATH}/coastline.json`,
+  highwaysIndex: `${LOCAL_DATA_PATH}/highways/index.json`,
+  highway: (id: string) => `${LOCAL_DATA_PATH}/highways/${id}.json`,
+  metadata: `${LOCAL_DATA_PATH}/metadata.json`,
 } as const;
 
 export const MAP_CONFIG = {

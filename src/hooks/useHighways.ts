@@ -1,11 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
-import { fetchHighwaysIndex, fetchHighwayData } from '@/utils/api';
+import { loadHighwaysIndex, loadHighwayData } from '@/utils/dataLoader';
 import { Highway } from '@/types';
 
 export function useHighwaysIndex() {
   return useQuery({
     queryKey: ['highways-index'],
-    queryFn: fetchHighwaysIndex,
+    queryFn: loadHighwaysIndex,
     staleTime: Infinity,
   });
 }
@@ -13,7 +13,7 @@ export function useHighwaysIndex() {
 export function useHighwayData(id: string, enabled: boolean = true) {
   return useQuery({
     queryKey: ['highway', id],
-    queryFn: () => fetchHighwayData(id),
+    queryFn: () => loadHighwayData(id),
     enabled,
     staleTime: Infinity,
   });

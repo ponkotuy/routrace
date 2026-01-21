@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Local data (symlink to routrace-data)
+public/data
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

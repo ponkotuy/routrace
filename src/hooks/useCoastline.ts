@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
-import { fetchCoastline } from '@/utils/api';
+import { loadCoastline } from '@/utils/dataLoader';
 
 export function useCoastline() {
   return useQuery({
     queryKey: ['coastline'],
-    queryFn: fetchCoastline,
+    queryFn: loadCoastline,
     staleTime: Infinity,
   });
 }
