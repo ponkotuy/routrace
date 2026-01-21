@@ -4,7 +4,7 @@ import { Highway } from '@/types';
 import { CoastlineLayer } from './CoastlineLayer';
 import { HighwayLayer } from './HighwayLayer';
 import { MAP_CONFIG } from '@/utils/constants';
-import { fetchHighwayData } from '@/utils/api';
+import { loadHighwayData } from '@/utils/dataLoader';
 import 'leaflet/dist/leaflet.css';
 
 interface MapViewProps {
@@ -25,7 +25,7 @@ export function MapView({
   const highwayQueries = useQueries({
     queries: selectedHighways.map(highway => ({
       queryKey: ['highway', highway.id],
-      queryFn: () => fetchHighwayData(highway.id),
+      queryFn: () => loadHighwayData(highway.id),
       staleTime: Infinity,
     })),
   });
