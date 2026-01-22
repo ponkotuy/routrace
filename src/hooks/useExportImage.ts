@@ -19,6 +19,17 @@ export function useExportImage() {
       const dataUrl = await toPng(mapElement, {
         backgroundColor: '#ffffff',
         cacheBust: true,
+        skipFonts: true,
+        filter: (node) => {
+          // Leaflet attribution control can cause issues with html-to-image
+          if (node instanceof Element) {
+            const className = node.className;
+            if (typeof className === 'string' && className.includes('leaflet-control-attribution')) {
+              return false;
+            }
+          }
+          return true;
+        },
       });
       
       const link = document.createElement('a');
