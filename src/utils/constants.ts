@@ -29,6 +29,8 @@ export const COASTLINE_STYLE = {
   fillOpacity: 0,
 } as const;
 
+export const DEFAULT_HIGHWAY_COLOR = '#4a90d9';
+
 export const HIGHWAY_STYLE = {
   weight: 2,
   opacity: 1,

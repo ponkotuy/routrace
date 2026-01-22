@@ -2,7 +2,6 @@ export interface Highway {
   id: string;
   name: string;
   nameEn: string;
-  color: string;
 }
 
 export interface HighwayIndex {

@@ -1,5 +1,6 @@
 import { Checkbox } from '@/components/ui/checkbox';
 import { Highway } from '@/types';
+import { DEFAULT_HIGHWAY_COLOR } from '@/utils/constants';
 
 interface HighwayItemProps {
   highway: Highway;
@@ -24,8 +25,8 @@ export function HighwayItem({ highway, isSelected, onToggle }: HighwayItemProps)
       </span>
       <span
         className="w-3 h-3 rounded-full shrink-0"
-        style={{ backgroundColor: highway.color }}
-        aria-label={`色: ${highway.color}`}
+        style={{ backgroundColor: DEFAULT_HIGHWAY_COLOR }}
+        aria-label={`色: ${DEFAULT_HIGHWAY_COLOR}`}
       />
     </label>
   );

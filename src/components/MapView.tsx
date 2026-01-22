@@ -57,7 +57,6 @@ export function MapView({
               key={highway.id}
               id={highway.id}
               data={query.data}
-              color={highway.color}
               name={highway.name}
             />
           );
