@@ -57,7 +57,7 @@ export function MapView({
               key={highway.id}
               id={highway.id}
               data={query.data}
-              name={highway.name}
+              name={`${highway.refDisplay} ${highway.name}`}
             />
           );
         })}

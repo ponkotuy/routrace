@@ -21,7 +21,7 @@ export function HighwayItem({ highway, isSelected, onToggle }: HighwayItemProps)
         className="data-[state=checked]:bg-primary data-[state=checked]:border-primary"
       />
       <span className="flex-1 text-sm font-medium text-foreground">
-        {highway.name}
+        {highway.refDisplay} {highway.name}
       </span>
       <span
         className="w-3 h-3 rounded-full shrink-0"

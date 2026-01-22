@@ -1,5 +1,6 @@
 export interface Highway {
   id: string;
+  refDisplay: string;
   name: string;
   nameEn: string;
 }
