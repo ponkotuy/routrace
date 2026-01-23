@@ -3,6 +3,7 @@ export interface Highway {
   refDisplay: string;
   name: string;
   nameEn: string;
+  group?: string;
 }
 
 export interface HighwayIndex {

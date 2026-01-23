@@ -1,3 +1,4 @@
+import { useMemo, useState } from 'react';
 import { Highway } from '@/types';
 import { HighwayItem } from './HighwayItem';
 import { LoadingSpinner } from './LoadingSpinner';
@@ -5,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { ChevronDown, ChevronRight } from 'lucide-react';
 
 interface HighwayListProps {
   highways: Highway[];
@@ -17,6 +19,11 @@ interface HighwayListProps {
   onToggleCoastline: () => void;
 }
 
+interface GroupedHighways {
+  groupName: string;
+  highways: Highway[];
+}
+
 export function HighwayList({
   highways,
   selectedIds,
@@ -27,6 +34,65 @@ export function HighwayList({
   onDeselectAll,
   onToggleCoastline,
 }: HighwayListProps) {
+  const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set());
+
+  const { grouped, ungrouped } = useMemo(() => {
+    const groupMap = new Map<string, Highway[]>();
+    const ungroupedList: Highway[] = [];
+
+    for (const highway of highways) {
+      if (highway.group) {
+        const list = groupMap.get(highway.group) || [];
+        list.push(highway);
+        groupMap.set(highway.group, list);
+      } else {
+        ungroupedList.push(highway);
+      }
+    }
+
+    const groupedList: GroupedHighways[] = Array.from(groupMap.entries()).map(
+      ([groupName, highways]) => ({ groupName, highways })
+    );
+
+    return { grouped: groupedList, ungrouped: ungroupedList };
+  }, [highways]);
+
+  const getGroupSelectionState = (groupHighways: Highway[]): 'all' | 'some' | 'none' => {
+    const selectedCount = groupHighways.filter(h => selectedIds.has(h.id)).length;
+    if (selectedCount === 0) return 'none';
+    if (selectedCount === groupHighways.length) return 'all';
+    return 'some';
+  };
+
+  const handleToggleGroup = (groupHighways: Highway[]) => {
+    const state = getGroupSelectionState(groupHighways);
+    if (state === 'all') {
+      groupHighways.forEach(h => {
+        if (selectedIds.has(h.id)) {
+          onToggleHighway(h.id);
+        }
+      });
+    } else {
+      groupHighways.forEach(h => {
+        if (!selectedIds.has(h.id)) {
+          onToggleHighway(h.id);
+        }
+      });
+    }
+  };
+
+  const toggleGroupExpand = (groupName: string) => {
+    setExpandedGroups(prev => {
+      const next = new Set(prev);
+      if (next.has(groupName)) {
+        next.delete(groupName);
+      } else {
+        next.add(groupName);
+      }
+      return next;
+    });
+  };
+
   if (isLoading) {
     return <LoadingSpinner />;
   }
@@ -47,17 +113,17 @@ export function HighwayList({
       <div className="px-4 py-3 border-b border-border">
         <h2 className="font-semibold text-foreground mb-3">高速道路を選択</h2>
         <div className="flex gap-2">
-          <Button 
-            variant="secondary" 
-            size="sm" 
+          <Button
+            variant="secondary"
+            size="sm"
             onClick={onSelectAll}
             className="flex-1 text-xs"
           >
             全選択
           </Button>
-          <Button 
-            variant="secondary" 
-            size="sm" 
+          <Button
+            variant="secondary"
+            size="sm"
             onClick={onDeselectAll}
             className="flex-1 text-xs"
           >
@@ -65,10 +131,60 @@ export function HighwayList({
           </Button>
         </div>
       </div>
-      
+
       <ScrollArea className="flex-1">
         <div className="py-2 px-1">
-          {highways.map((highway) => (
+          {grouped.map(({ groupName, highways: groupHighways }) => {
+            const selectionState = getGroupSelectionState(groupHighways);
+            const isExpanded = expandedGroups.has(groupName);
+
+            return (
+              <div key={groupName} className="mb-1">
+                <div className="flex items-center gap-1 py-2 px-3 rounded-md hover:bg-secondary/50 transition-colors">
+                  <button
+                    type="button"
+                    onClick={() => toggleGroupExpand(groupName)}
+                    className="p-0.5 hover:bg-secondary rounded"
+                  >
+                    {isExpanded ? (
+                      <ChevronDown className="w-4 h-4 text-muted-foreground" />
+                    ) : (
+                      <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                    )}
+                  </button>
+                  <Checkbox
+                    id={`group-${groupName}`}
+                    checked={selectionState === 'all' ? true : selectionState === 'some' ? 'indeterminate' : false}
+                    onCheckedChange={() => handleToggleGroup(groupHighways)}
+                    className="data-[state=checked]:bg-primary data-[state=checked]:border-primary data-[state=indeterminate]:bg-primary data-[state=indeterminate]:border-primary"
+                  />
+                  <label
+                    htmlFor={`group-${groupName}`}
+                    className="flex-1 text-sm font-semibold text-foreground cursor-pointer"
+                  >
+                    {groupName}
+                  </label>
+                  <span className="text-xs text-muted-foreground">
+                    {groupHighways.filter(h => selectedIds.has(h.id)).length}/{groupHighways.length}
+                  </span>
+                </div>
+                {isExpanded && (
+                  <div className="ml-6">
+                    {groupHighways.map((highway) => (
+                      <HighwayItem
+                        key={highway.id}
+                        highway={highway}
+                        isSelected={selectedIds.has(highway.id)}
+                        onToggle={onToggleHighway}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+
+          {ungrouped.map((highway) => (
             <HighwayItem
               key={highway.id}
               highway={highway}
