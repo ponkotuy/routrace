@@ -28,8 +28,8 @@ export function InfoModal({ isOpen, onClose }: InfoModalProps) {
           <div>
             <h4 className="font-semibold text-sm mb-2">データソース</h4>
             <ul className="text-sm text-muted-foreground space-y-1">
-              <li>• 地図データ: OpenStreetMap</li>
-              <li>• 海岸線: 地球地図日本（国土地理院）</li>
+              <li>• 高速道路: OpenStreetMap</li>
+              <li>• 海岸線: dataofjapan/land（地球地図日本）</li>
             </ul>
           </div>
           
@@ -37,7 +37,7 @@ export function InfoModal({ isOpen, onClose }: InfoModalProps) {
             <h4 className="font-semibold text-sm mb-2">ライセンス</h4>
             <ul className="text-sm text-muted-foreground space-y-1">
               <li>• ODbL (OpenStreetMap)</li>
-              <li>• 出典: 地球地図日本</li>
+              <li>• CC BY 4.0 (dataofjapan/land)</li>
             </ul>
           </div>
         </div>

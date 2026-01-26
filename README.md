@@ -43,8 +43,14 @@ npm run dev
 
 ## データソース
 
+このアプリケーションは以下のデータソースを使用しています：
+
+- **高速道路データ**: [OpenStreetMap](https://www.openstreetmap.org/) (ODbL ライセンス)
+- **海岸線データ**: [dataofjapan/land](https://github.com/dataofjapan/land) (CC BY 4.0 ライセンス)
+
 地図データは [routrace-data](https://github.com/ponkotuy/routrace-data) から取得しています。
 
 ## ライセンス
 
-地図データは OpenStreetMap contributors のデータを使用しています。
+- 高速道路データ: © OpenStreetMap contributors (ODbL)
+- 海岸線データ: dataofjapan/land (CC BY 4.0)
