@@ -1,8 +1,9 @@
-import { Highway } from '@/types';
+import { Highway, Group } from '@/types';
 import { HighwayList } from './HighwayList';
 
 interface SidebarProps {
   highways: Highway[];
+  groups: Group[];
   selectedIds: Set<string>;
   showCoastline: boolean;
   isLoading: boolean;
@@ -14,6 +15,7 @@ interface SidebarProps {
 
 export function Sidebar({
   highways,
+  groups,
   selectedIds,
   showCoastline,
   isLoading,
@@ -26,6 +28,7 @@ export function Sidebar({
     <aside className="w-[280px] bg-card border-r border-border flex flex-col shrink-0 h-full">
       <HighwayList
         highways={highways}
+        groups={groups}
         selectedIds={selectedIds}
         showCoastline={showCoastline}
         isLoading={isLoading}

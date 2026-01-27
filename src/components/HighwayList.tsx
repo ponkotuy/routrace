@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Highway } from '@/types';
+import { Highway, Group } from '@/types';
 import { HighwayItem } from './HighwayItem';
 import { LoadingSpinner } from './LoadingSpinner';
 import { Button } from '@/components/ui/button';
@@ -10,6 +10,7 @@ import { ChevronDown, ChevronRight } from 'lucide-react';
 
 interface HighwayListProps {
   highways: Highway[];
+  groups: Group[];
   selectedIds: Set<string>;
   showCoastline: boolean;
   isLoading: boolean;
@@ -21,11 +22,13 @@ interface HighwayListProps {
 
 interface GroupedHighways {
   groupName: string;
+  groupType: Group['type'];
   highways: Highway[];
 }
 
 export function HighwayList({
   highways,
+  groups,
   selectedIds,
   showCoastline,
   isLoading,
@@ -36,26 +39,38 @@ export function HighwayList({
 }: HighwayListProps) {
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set());
 
-  const { grouped, ungrouped } = useMemo(() => {
+  const groupedHighways = useMemo(() => {
     const groupMap = new Map<string, Highway[]>();
-    const ungroupedList: Highway[] = [];
 
     for (const highway of highways) {
-      if (highway.group) {
-        const list = groupMap.get(highway.group) || [];
-        list.push(highway);
-        groupMap.set(highway.group, list);
-      } else {
-        ungroupedList.push(highway);
+      const list = groupMap.get(highway.group) || [];
+      list.push(highway);
+      groupMap.set(highway.group, list);
+    }
+
+    const groupOrderMap = new Map(groups.map(g => [g.name, g]));
+
+    const groupedList: GroupedHighways[] = groups
+      .filter(g => groupMap.has(g.name))
+      .map(g => ({
+        groupName: g.name,
+        groupType: g.type,
+        highways: groupMap.get(g.name)!,
+      }));
+
+    // 不明なグループがあれば最後に追加
+    for (const [groupName, groupHighways] of groupMap) {
+      if (!groupOrderMap.has(groupName)) {
+        groupedList.push({
+          groupName,
+          groupType: '一般高速',
+          highways: groupHighways,
+        });
       }
     }
 
-    const groupedList: GroupedHighways[] = Array.from(groupMap.entries()).map(
-      ([groupName, highways]) => ({ groupName, highways })
-    );
-
-    return { grouped: groupedList, ungrouped: ungroupedList };
-  }, [highways]);
+    return groupedList;
+  }, [highways, groups]);
 
   const getGroupSelectionState = (groupHighways: Highway[]): 'all' | 'some' | 'none' => {
     const selectedCount = groupHighways.filter(h => selectedIds.has(h.id)).length;
@@ -134,7 +149,7 @@ export function HighwayList({
 
       <ScrollArea className="flex-1">
         <div className="py-2 px-1">
-          {grouped.map(({ groupName, highways: groupHighways }) => {
+          {groupedHighways.map(({ groupName, highways: groupHighways }) => {
             const selectionState = getGroupSelectionState(groupHighways);
             const isExpanded = expandedGroups.has(groupName);
 
@@ -183,15 +198,6 @@ export function HighwayList({
               </div>
             );
           })}
-
-          {ungrouped.map((highway) => (
-            <HighwayItem
-              key={highway.id}
-              highway={highway}
-              isSelected={selectedIds.has(highway.id)}
-              onToggle={onToggleHighway}
-            />
-          ))}
         </div>
       </ScrollArea>
 

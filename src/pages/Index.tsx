@@ -4,7 +4,7 @@ import { Sidebar } from '@/components/Sidebar';
 import { MobileDrawer } from '@/components/MobileDrawer';
 import { MapView } from '@/components/MapView';
 import { InfoModal } from '@/components/InfoModal';
-import { useHighwaysIndex } from '@/hooks/useHighways';
+import { useHighwaysIndex, useGroupsIndex } from '@/hooks/useHighways';
 import { useCoastline } from '@/hooks/useCoastline';
 import { useExportImage } from '@/hooks/useExportImage';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -12,6 +12,7 @@ import { useIsMobile } from '@/hooks/use-mobile';
 const Index = () => {
   const isMobile = useIsMobile();
   const { data: highwaysData, isLoading: isLoadingHighways } = useHighwaysIndex();
+  const { data: groupsData, isLoading: isLoadingGroups } = useGroupsIndex();
   const { data: coastlineData } = useCoastline();
   const { exportImage } = useExportImage();
 
@@ -21,6 +22,7 @@ const Index = () => {
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
 
   const highways = highwaysData?.highways ?? [];
+  const groups = groupsData?.groups ?? [];
 
   const handleToggleHighway = useCallback((id: string) => {
     setSelectedIds(prev => {
@@ -60,9 +62,10 @@ const Index = () => {
 
   const sidebarProps = {
     highways,
+    groups,
     selectedIds,
     showCoastline,
-    isLoading: isLoadingHighways,
+    isLoading: isLoadingHighways || isLoadingGroups,
     onToggleHighway: handleToggleHighway,
     onSelectAll: handleSelectAll,
     onDeselectAll: handleDeselectAll,

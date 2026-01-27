@@ -3,11 +3,23 @@ export interface Highway {
   refDisplay: string;
   name: string;
   nameEn: string;
-  group?: string;
+  group: string;
 }
 
 export interface HighwayIndex {
   highways: Highway[];
+}
+
+export type GroupType = '都市高速' | '一般高速';
+
+export interface Group {
+  name: string;
+  type: GroupType;
+  order: number;
+}
+
+export interface GroupIndex {
+  groups: Group[];
 }
 
 export interface AppState {

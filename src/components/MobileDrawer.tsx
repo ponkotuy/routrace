@@ -1,9 +1,10 @@
-import { Highway } from '@/types';
+import { Highway, Group } from '@/types';
 import { HighwayList } from './HighwayList';
 import { Sheet, SheetContent } from '@/components/ui/sheet';
 
 interface MobileDrawerProps {
   highways: Highway[];
+  groups: Group[];
   selectedIds: Set<string>;
   showCoastline: boolean;
   isLoading: boolean;
@@ -17,6 +18,7 @@ interface MobileDrawerProps {
 
 export function MobileDrawer({
   highways,
+  groups,
   selectedIds,
   showCoastline,
   isLoading,
@@ -32,6 +34,7 @@ export function MobileDrawer({
       <SheetContent side="left" className="w-[300px] p-0">
         <HighwayList
           highways={highways}
+          groups={groups}
           selectedIds={selectedIds}
           showCoastline={showCoastline}
           isLoading={isLoading}

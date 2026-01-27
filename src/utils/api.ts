@@ -1,10 +1,18 @@
-import { HighwayIndex } from '@/types';
+import { HighwayIndex, GroupIndex } from '@/types';
 import { ENDPOINTS } from './constants';
 
 export async function fetchHighwaysIndex(): Promise<HighwayIndex> {
   const response = await fetch(ENDPOINTS.highwaysIndex);
   if (!response.ok) {
     throw new Error('Failed to fetch highways index');
+  }
+  return response.json();
+}
+
+export async function fetchGroupsIndex(): Promise<GroupIndex> {
+  const response = await fetch(ENDPOINTS.groupsIndex);
+  if (!response.ok) {
+    throw new Error('Failed to fetch groups index');
   }
   return response.json();
 }

@@ -1,11 +1,19 @@
 import { useQuery } from '@tanstack/react-query';
-import { loadHighwaysIndex, loadHighwayData } from '@/utils/dataLoader';
+import { loadHighwaysIndex, loadHighwayData, loadGroupsIndex } from '@/utils/dataLoader';
 import { Highway } from '@/types';
 
 export function useHighwaysIndex() {
   return useQuery({
     queryKey: ['highways-index'],
     queryFn: loadHighwaysIndex,
+    staleTime: Infinity,
+  });
+}
+
+export function useGroupsIndex() {
+  return useQuery({
+    queryKey: ['groups-index'],
+    queryFn: loadGroupsIndex,
     staleTime: Infinity,
   });
 }

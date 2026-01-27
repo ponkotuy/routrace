@@ -45,4 +45,8 @@ npm run test:watch   # Run tests in watch mode
 
 ## Data Types
 
-Highways have: `id`, `refDisplay` (route number), `name` (Japanese), `nameEn`, optional `group` for categorization.
+**Highway:** `id`, `refDisplay` (route number), `name` (Japanese), `nameEn`, `group` (required group name)
+
+**Group:** `name` (primary key), `type` ("都市高速" or "一般高速"), `order` (sort order)
+
+Groups are fetched from `highways/group.json` and used to sort highway lists in UI.
