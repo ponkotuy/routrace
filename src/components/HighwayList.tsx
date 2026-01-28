@@ -26,6 +26,31 @@ interface GroupedHighways {
   highways: Highway[];
 }
 
+function parseRef(refDisplay: string): { num: number; suffix: string } {
+  if (!refDisplay) {
+    return { num: Infinity, suffix: '' };
+  }
+  const match = refDisplay.match(/^[A-Za-z]*(\d+)(.*)$/);
+  if (match) {
+    return { num: parseInt(match[1], 10), suffix: match[2] };
+  }
+  return { num: Infinity, suffix: refDisplay };
+}
+
+function compareRef(a: Highway, b: Highway): number {
+  const parsedA = parseRef(a.refDisplay);
+  const parsedB = parseRef(b.refDisplay);
+
+  if (parsedA.num !== parsedB.num) {
+    return parsedA.num - parsedB.num;
+  }
+
+  if (parsedA.suffix === '' && parsedB.suffix !== '') return -1;
+  if (parsedA.suffix !== '' && parsedB.suffix === '') return 1;
+
+  return parsedA.suffix.localeCompare(parsedB.suffix);
+}
+
 export function HighwayList({
   highways,
   groups,
@@ -55,7 +80,7 @@ export function HighwayList({
       .map(g => ({
         groupName: g.name,
         groupType: g.type,
-        highways: groupMap.get(g.name)!,
+        highways: groupMap.get(g.name)!.slice().sort(compareRef),
       }));
 
     // 不明なグループがあれば最後に追加
@@ -64,7 +89,7 @@ export function HighwayList({
         groupedList.push({
           groupName,
           groupType: '一般高速',
-          highways: groupHighways,
+          highways: groupHighways.slice().sort(compareRef),
         });
       }
     }
