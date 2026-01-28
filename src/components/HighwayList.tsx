@@ -7,6 +7,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { ChevronDown, ChevronRight } from 'lucide-react';
+import { compareRef } from '@/utils/sortHighways';
 
 interface HighwayListProps {
   highways: Highway[];
@@ -24,31 +25,6 @@ interface GroupedHighways {
   groupName: string;
   groupType: Group['type'];
   highways: Highway[];
-}
-
-function parseRef(refDisplay: string): { num: number; suffix: string } {
-  if (!refDisplay) {
-    return { num: Infinity, suffix: '' };
-  }
-  const match = refDisplay.match(/^[A-Za-z]*(\d+)(.*)$/);
-  if (match) {
-    return { num: parseInt(match[1], 10), suffix: match[2] };
-  }
-  return { num: Infinity, suffix: refDisplay };
-}
-
-function compareRef(a: Highway, b: Highway): number {
-  const parsedA = parseRef(a.refDisplay);
-  const parsedB = parseRef(b.refDisplay);
-
-  if (parsedA.num !== parsedB.num) {
-    return parsedA.num - parsedB.num;
-  }
-
-  if (parsedA.suffix === '' && parsedB.suffix !== '') return -1;
-  if (parsedA.suffix !== '' && parsedB.suffix === '') return 1;
-
-  return parsedA.suffix.localeCompare(parsedB.suffix);
 }
 
 export function HighwayList({
