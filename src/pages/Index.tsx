@@ -74,17 +74,17 @@ const Index = () => {
 
   return (
     <div className="h-screen flex flex-col overflow-hidden bg-background">
-      <Header 
+      <Header
         onSave={handleSave}
         onInfo={handleInfo}
         onMenuToggle={handleMenuToggle}
         isMenuOpen={isDrawerOpen}
         isMobile={isMobile}
       />
-      
+
       <div className="flex-1 flex overflow-hidden">
         {!isMobile && <Sidebar {...sidebarProps} />}
-        
+
         <MapView
           coastlineData={coastlineData}
           showCoastline={showCoastline}
@@ -92,10 +92,6 @@ const Index = () => {
           selectedIds={selectedIds}
         />
       </div>
-
-      <footer className="h-6 bg-card border-t border-border flex items-center justify-center text-xs text-muted-foreground shrink-0">
-        © OpenStreetMap contributors
-      </footer>
 
       {isMobile && (
         <MobileDrawer
@@ -105,9 +101,9 @@ const Index = () => {
         />
       )}
 
-      <InfoModal 
-        isOpen={isInfoModalOpen} 
-        onClose={() => setIsInfoModalOpen(false)} 
+      <InfoModal
+        isOpen={isInfoModalOpen}
+        onClose={() => setIsInfoModalOpen(false)}
       />
     </div>
   );
