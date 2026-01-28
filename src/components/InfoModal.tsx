@@ -20,7 +20,7 @@ export function InfoModal({ isOpen, onClose }: InfoModalProps) {
         <DialogHeader>
           <DialogTitle className="text-xl">routrace について</DialogTitle>
           <DialogDescription className="text-base pt-4 text-foreground">
-            指定した高速道路だけを表示する地図アプリケーションです。
+            Routraceは日本の道路地図を生成するWebアプリです。
           </DialogDescription>
         </DialogHeader>
         
@@ -29,7 +29,7 @@ export function InfoModal({ isOpen, onClose }: InfoModalProps) {
             <h4 className="font-semibold text-sm mb-2">データソース</h4>
             <ul className="text-sm text-muted-foreground space-y-1">
               <li>• 地図データ: OpenStreetMap</li>
-              <li>• 海岸線: 地球地図日本（国土地理院）</li>
+              <li>• 海岸線: dataofjapan/land（地球地図日本）</li>
             </ul>
           </div>
           

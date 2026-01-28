@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Routrace is a Japanese highway visualization web application that displays expressway routes on an interactive Leaflet map. Users can select highways, toggle coastline visibility, and export map images.
+Routrace is a web application that generates Japanese road maps.
 
 ## Commands
 
