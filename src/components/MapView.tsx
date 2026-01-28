@@ -62,6 +62,9 @@ export function MapView({
           );
         })}
       </MapContainer>
+      <div className="absolute bottom-0 left-0 bg-white/80 text-xs px-1 z-[1000]">
+        © OpenStreetMap contributors | dataofjapan/land
+      </div>
     </div>
   );
 }
