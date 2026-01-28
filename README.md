@@ -1,5 +1,7 @@
 # Routrace
 
+[![Test](https://github.com/ponkotuy/routrace/actions/workflows/test.yml/badge.svg)](https://github.com/ponkotuy/routrace/actions/workflows/test.yml)
+
 Routraceは日本の道路地図を生成するWebアプリです。
 
 ## 機能
