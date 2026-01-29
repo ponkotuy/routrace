@@ -34,8 +34,13 @@ export function Header({
             )}
           </Button>
         )}
+        <img
+          src="/android-chrome-192x192.png"
+          alt="routrace"
+          className="h-6 w-6"
+        />
         <span className="text-lg font-bold tracking-tight text-foreground">
-          🛤️ routrace
+          routrace
         </span>
       </div>
       
