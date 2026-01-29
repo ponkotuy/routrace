@@ -4,11 +4,17 @@ import { HighwayItem } from './HighwayItem';
 import { LoadingSpinner } from './LoadingSpinner';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { ChevronDown, ChevronRight } from 'lucide-react';
 import { compareRef } from '@/utils/sortHighways';
-import { DEFAULT_HIGHWAY_COLOR } from '@/utils/constants';
+import { DEFAULT_HIGHWAY_COLOR, HIGHWAY_COLOR_OPTIONS } from '@/utils/constants';
 
 interface HighwayListProps {
   highways: Highway[];
@@ -19,6 +25,7 @@ interface HighwayListProps {
   highwayColors: Record<string, string>;
   onToggleHighway: (id: string) => void;
   onSetHighwayColor: (id: string, color: string) => void;
+  onSetGroupColor: (ids: string[], color: string) => void;
   onSelectAll: () => void;
   onDeselectAll: () => void;
   onToggleCoastline: () => void;
@@ -39,6 +46,7 @@ export function HighwayList({
   highwayColors,
   onToggleHighway,
   onSetHighwayColor,
+  onSetGroupColor,
   onSelectAll,
   onDeselectAll,
   onToggleCoastline,
@@ -102,6 +110,17 @@ export function HighwayList({
     }
   };
 
+  const getHighwayColor = (highwayId: string) =>
+    highwayColors[highwayId] ?? DEFAULT_HIGHWAY_COLOR;
+
+  const getGroupColor = (groupHighways: Highway[]) => {
+    if (groupHighways.length === 0) return null;
+    const firstColor = getHighwayColor(groupHighways[0].id);
+    return groupHighways.every(h => getHighwayColor(h.id) === firstColor)
+      ? firstColor
+      : null;
+  };
+
   const toggleGroupExpand = (groupName: string) => {
     setExpandedGroups(prev => {
       const next = new Set(prev);
@@ -158,6 +177,7 @@ export function HighwayList({
           {groupedHighways.map(({ groupName, highways: groupHighways }) => {
             const selectionState = getGroupSelectionState(groupHighways);
             const isExpanded = expandedGroups.has(groupName);
+            const groupColor = getGroupColor(groupHighways);
 
             return (
               <div key={groupName} className="mb-1">
@@ -188,6 +208,48 @@ export function HighwayList({
                   <span className="text-xs text-muted-foreground">
                     {groupHighways.filter(h => selectedIds.has(h.id)).length}/{groupHighways.length}
                   </span>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <button
+                        type="button"
+                        className="h-4 w-4 rounded-full shrink-0"
+                        style={
+                          groupColor
+                            ? { backgroundColor: groupColor }
+                            : {
+                                backgroundImage:
+                                  'linear-gradient(135deg, #9ca3af 0 50%, #d1d5db 50% 100%)',
+                              }
+                        }
+                        aria-label={
+                          groupColor ? `グループ色: ${groupColor}` : 'グループ色: 複数'
+                        }
+                      />
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="p-2">
+                      <div className="grid grid-cols-4 gap-2">
+                        {HIGHWAY_COLOR_OPTIONS.map(option => (
+                          <DropdownMenuItem
+                            key={option}
+                            onSelect={(event) => {
+                              event.preventDefault();
+                              onSetGroupColor(
+                                groupHighways.map(h => h.id),
+                                option,
+                              );
+                            }}
+                            className="p-0 h-7 w-7 justify-center cursor-pointer"
+                            aria-label={`色 ${option}`}
+                          >
+                            <span
+                              className="h-5 w-5 rounded-full"
+                              style={{ backgroundColor: option }}
+                            />
+                          </DropdownMenuItem>
+                        ))}
+                      </div>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </div>
                 {isExpanded && (
                   <div className="ml-6">
@@ -196,7 +258,7 @@ export function HighwayList({
                         key={highway.id}
                         highway={highway}
                         isSelected={selectedIds.has(highway.id)}
-                        color={highwayColors[highway.id] ?? DEFAULT_HIGHWAY_COLOR}
+                        color={getHighwayColor(highway.id)}
                         onToggle={onToggleHighway}
                         onColorChange={onSetHighwayColor}
                       />

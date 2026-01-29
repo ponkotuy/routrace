@@ -44,6 +44,20 @@ const Index = () => {
     });
   }, []);
 
+  const handleSetGroupColor = useCallback((ids: string[], color: string) => {
+    setHighwayColors(prev => {
+      let changed = false;
+      const next = { ...prev };
+      for (const id of ids) {
+        if (next[id] !== color) {
+          next[id] = color;
+          changed = true;
+        }
+      }
+      return changed ? next : prev;
+    });
+  }, []);
+
   const handleSelectAll = useCallback(() => {
     setSelectedIds(new Set(highways.map(h => h.id)));
   }, [highways]);
@@ -77,6 +91,7 @@ const Index = () => {
     highwayColors,
     onToggleHighway: handleToggleHighway,
     onSetHighwayColor: handleSetHighwayColor,
+    onSetGroupColor: handleSetGroupColor,
     onSelectAll: handleSelectAll,
     onDeselectAll: handleDeselectAll,
     onToggleCoastline: handleToggleCoastline,
