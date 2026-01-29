@@ -10,7 +10,9 @@ interface MobileDrawerProps {
   isLoading: boolean;
   isOpen: boolean;
   onClose: () => void;
+  highwayColors: Record<string, string>;
   onToggleHighway: (id: string) => void;
+  onSetHighwayColor: (id: string, color: string) => void;
   onSelectAll: () => void;
   onDeselectAll: () => void;
   onToggleCoastline: () => void;
@@ -24,7 +26,9 @@ export function MobileDrawer({
   isLoading,
   isOpen,
   onClose,
+  highwayColors,
   onToggleHighway,
+  onSetHighwayColor,
   onSelectAll,
   onDeselectAll,
   onToggleCoastline,
@@ -38,7 +42,9 @@ export function MobileDrawer({
           selectedIds={selectedIds}
           showCoastline={showCoastline}
           isLoading={isLoading}
+          highwayColors={highwayColors}
           onToggleHighway={onToggleHighway}
+          onSetHighwayColor={onSetHighwayColor}
           onSelectAll={onSelectAll}
           onDeselectAll={onDeselectAll}
           onToggleCoastline={onToggleCoastline}

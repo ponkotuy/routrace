@@ -3,7 +3,7 @@ import { useQueries } from '@tanstack/react-query';
 import { Highway } from '@/types';
 import { CoastlineLayer } from './CoastlineLayer';
 import { HighwayLayer } from './HighwayLayer';
-import { MAP_CONFIG } from '@/utils/constants';
+import { MAP_CONFIG, DEFAULT_HIGHWAY_COLOR } from '@/utils/constants';
 import { loadHighwayData } from '@/utils/dataLoader';
 import 'leaflet/dist/leaflet.css';
 
@@ -12,6 +12,7 @@ interface MapViewProps {
   showCoastline: boolean;
   highways: Highway[];
   selectedIds: Set<string>;
+  highwayColors: Record<string, string>;
 }
 
 export function MapView({ 
@@ -19,6 +20,7 @@ export function MapView({
   showCoastline, 
   highways,
   selectedIds,
+  highwayColors,
 }: MapViewProps) {
   const selectedHighways = highways.filter(h => selectedIds.has(h.id));
   
@@ -58,6 +60,7 @@ export function MapView({
               id={highway.id}
               data={query.data}
               name={`${highway.refDisplay} ${highway.name}`}
+              color={highwayColors[highway.id] ?? DEFAULT_HIGHWAY_COLOR}
             />
           );
         })}

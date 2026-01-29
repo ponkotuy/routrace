@@ -20,6 +20,7 @@ const Index = () => {
   const [showCoastline, setShowCoastline] = useState(true);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
+  const [highwayColors, setHighwayColors] = useState<Record<string, string>>({});
 
   const highways = highwaysData?.highways ?? [];
   const groups = groupsData?.groups ?? [];
@@ -33,6 +34,13 @@ const Index = () => {
         next.add(id);
       }
       return next;
+    });
+  }, []);
+
+  const handleSetHighwayColor = useCallback((id: string, color: string) => {
+    setHighwayColors(prev => {
+      if (prev[id] === color) return prev;
+      return { ...prev, [id]: color };
     });
   }, []);
 
@@ -66,7 +74,9 @@ const Index = () => {
     selectedIds,
     showCoastline,
     isLoading: isLoadingHighways || isLoadingGroups,
+    highwayColors,
     onToggleHighway: handleToggleHighway,
+    onSetHighwayColor: handleSetHighwayColor,
     onSelectAll: handleSelectAll,
     onDeselectAll: handleDeselectAll,
     onToggleCoastline: handleToggleCoastline,
@@ -90,6 +100,7 @@ const Index = () => {
           showCoastline={showCoastline}
           highways={highways}
           selectedIds={selectedIds}
+          highwayColors={highwayColors}
         />
       </div>
 

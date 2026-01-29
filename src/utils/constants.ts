@@ -32,6 +32,16 @@ export const COASTLINE_STYLE = {
 } as const;
 
 export const DEFAULT_HIGHWAY_COLOR = '#4a90d9';
+export const HIGHWAY_COLOR_OPTIONS = [
+  '#4a90d9',
+  '#e24a4a',
+  '#f08c2e',
+  '#f2c94c',
+  '#42b883',
+  '#2aa7b8',
+  '#6c63ff',
+  '#b45bd6',
+] as const;
 
 export const HIGHWAY_STYLE = {
   weight: 2,

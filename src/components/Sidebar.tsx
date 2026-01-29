@@ -7,7 +7,9 @@ interface SidebarProps {
   selectedIds: Set<string>;
   showCoastline: boolean;
   isLoading: boolean;
+  highwayColors: Record<string, string>;
   onToggleHighway: (id: string) => void;
+  onSetHighwayColor: (id: string, color: string) => void;
   onSelectAll: () => void;
   onDeselectAll: () => void;
   onToggleCoastline: () => void;
@@ -19,7 +21,9 @@ export function Sidebar({
   selectedIds,
   showCoastline,
   isLoading,
+  highwayColors,
   onToggleHighway,
+  onSetHighwayColor,
   onSelectAll,
   onDeselectAll,
   onToggleCoastline,
@@ -32,7 +36,9 @@ export function Sidebar({
         selectedIds={selectedIds}
         showCoastline={showCoastline}
         isLoading={isLoading}
+        highwayColors={highwayColors}
         onToggleHighway={onToggleHighway}
+        onSetHighwayColor={onSetHighwayColor}
         onSelectAll={onSelectAll}
         onDeselectAll={onDeselectAll}
         onToggleCoastline={onToggleCoastline}

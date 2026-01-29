@@ -1,15 +1,15 @@
 import { GeoJSON, Tooltip } from 'react-leaflet';
-import { HIGHWAY_STYLE, HIGHWAY_HOVER_STYLE, DEFAULT_HIGHWAY_COLOR } from '@/utils/constants';
+import { HIGHWAY_STYLE, HIGHWAY_HOVER_STYLE } from '@/utils/constants';
 import type { PathOptions, LeafletMouseEvent } from 'leaflet';
 
 interface HighwayLayerProps {
   id: string;
   data: GeoJSON.FeatureCollection;
   name: string;
+  color: string;
 }
 
-export function HighwayLayer({ id, data, name }: HighwayLayerProps) {
-  const color = DEFAULT_HIGHWAY_COLOR;
+export function HighwayLayer({ id, data, name, color }: HighwayLayerProps) {
   const style: PathOptions = {
     ...HIGHWAY_STYLE,
     color,

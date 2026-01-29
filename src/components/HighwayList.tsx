@@ -8,6 +8,7 @@ import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { ChevronDown, ChevronRight } from 'lucide-react';
 import { compareRef } from '@/utils/sortHighways';
+import { DEFAULT_HIGHWAY_COLOR } from '@/utils/constants';
 
 interface HighwayListProps {
   highways: Highway[];
@@ -15,7 +16,9 @@ interface HighwayListProps {
   selectedIds: Set<string>;
   showCoastline: boolean;
   isLoading: boolean;
+  highwayColors: Record<string, string>;
   onToggleHighway: (id: string) => void;
+  onSetHighwayColor: (id: string, color: string) => void;
   onSelectAll: () => void;
   onDeselectAll: () => void;
   onToggleCoastline: () => void;
@@ -33,7 +36,9 @@ export function HighwayList({
   selectedIds,
   showCoastline,
   isLoading,
+  highwayColors,
   onToggleHighway,
+  onSetHighwayColor,
   onSelectAll,
   onDeselectAll,
   onToggleCoastline,
@@ -191,7 +196,9 @@ export function HighwayList({
                         key={highway.id}
                         highway={highway}
                         isSelected={selectedIds.has(highway.id)}
+                        color={highwayColors[highway.id] ?? DEFAULT_HIGHWAY_COLOR}
                         onToggle={onToggleHighway}
+                        onColorChange={onSetHighwayColor}
                       />
                     ))}
                   </div>
