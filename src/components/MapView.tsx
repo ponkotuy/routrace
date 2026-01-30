@@ -1,33 +1,48 @@
 import { MapContainer, ZoomControl } from 'react-leaflet';
 import { useQueries } from '@tanstack/react-query';
-import { Highway } from '@/types';
+import { Highway, NationalRoute } from '@/types';
 import { CoastlineLayer } from './CoastlineLayer';
 import { HighwayLayer } from './HighwayLayer';
-import { MAP_CONFIG, DEFAULT_HIGHWAY_COLOR } from '@/utils/constants';
-import { loadHighwayData } from '@/utils/dataLoader';
+import { MAP_CONFIG, DEFAULT_HIGHWAY_COLOR, DEFAULT_NATIONAL_ROUTE_COLOR } from '@/utils/constants';
+import { loadHighwayData, loadNationalRouteData } from '@/utils/dataLoader';
 import 'leaflet/dist/leaflet.css';
 
 interface MapViewProps {
   coastlineData: GeoJSON.FeatureCollection | undefined;
   showCoastline: boolean;
   highways: Highway[];
-  selectedIds: Set<string>;
+  selectedHighwayIds: Set<string>;
   highwayColors: Record<string, string>;
+  nationalRoutes: NationalRoute[];
+  selectedNationalRouteIds: Set<string>;
+  nationalRouteColors: Record<string, string>;
 }
 
-export function MapView({ 
-  coastlineData, 
-  showCoastline, 
+export function MapView({
+  coastlineData,
+  showCoastline,
   highways,
-  selectedIds,
+  selectedHighwayIds,
   highwayColors,
+  nationalRoutes,
+  selectedNationalRouteIds,
+  nationalRouteColors,
 }: MapViewProps) {
-  const selectedHighways = highways.filter(h => selectedIds.has(h.id));
-  
+  const selectedHighways = highways.filter(h => selectedHighwayIds.has(h.id));
+  const selectedNationalRoutes = nationalRoutes.filter(r => selectedNationalRouteIds.has(r.id));
+
   const highwayQueries = useQueries({
     queries: selectedHighways.map(highway => ({
       queryKey: ['highway', highway.id],
       queryFn: () => loadHighwayData(highway.id),
+      staleTime: Infinity,
+    })),
+  });
+
+  const nationalRouteQueries = useQueries({
+    queries: selectedNationalRoutes.map(route => ({
+      queryKey: ['national-route', route.id],
+      queryFn: () => loadNationalRouteData(route.id),
       staleTime: Infinity,
     })),
   });
@@ -44,16 +59,16 @@ export function MapView({
         style={{ background: '#ffffff' }}
       >
         <ZoomControl position="bottomright" />
-        
-        <CoastlineLayer 
-          data={coastlineData} 
-          show={showCoastline} 
+
+        <CoastlineLayer
+          data={coastlineData}
+          show={showCoastline}
         />
-        
+
         {selectedHighways.map((highway, index) => {
           const query = highwayQueries[index];
           if (!query.data) return null;
-          
+
           return (
             <HighwayLayer
               key={highway.id}
@@ -61,6 +76,21 @@ export function MapView({
               data={query.data}
               name={`${highway.refDisplay} ${highway.name}`}
               color={highwayColors[highway.id] ?? DEFAULT_HIGHWAY_COLOR}
+            />
+          );
+        })}
+
+        {selectedNationalRoutes.map((route, index) => {
+          const query = nationalRouteQueries[index];
+          if (!query.data) return null;
+
+          return (
+            <HighwayLayer
+              key={route.id}
+              id={route.id}
+              data={query.data}
+              name={route.name}
+              color={nationalRouteColors[route.id] ?? DEFAULT_NATIONAL_ROUTE_COLOR}
             />
           );
         })}

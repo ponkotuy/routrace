@@ -1,8 +1,9 @@
 import { Highway, Group, NationalRoute, NationalRouteGroup } from '@/types';
-import { RoadTabs } from './RoadTabs';
-import { Sheet, SheetContent } from '@/components/ui/sheet';
+import { HighwayList } from './HighwayList';
+import { NationalRouteList } from './NationalRouteList';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
-interface MobileDrawerProps {
+interface RoadTabsProps {
   // Highway props
   highways: Highway[];
   groups: Group[];
@@ -28,11 +29,9 @@ interface MobileDrawerProps {
   // Shared props
   showCoastline: boolean;
   onToggleCoastline: () => void;
-  isOpen: boolean;
-  onClose: () => void;
 }
 
-export function MobileDrawer({
+export function RoadTabs({
   highways,
   groups,
   selectedHighwayIds,
@@ -55,37 +54,47 @@ export function MobileDrawer({
   onDeselectAllNationalRoutes,
   showCoastline,
   onToggleCoastline,
-  isOpen,
-  onClose,
-}: MobileDrawerProps) {
+}: RoadTabsProps) {
   return (
-    <Sheet open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <SheetContent side="left" className="w-[300px] p-0">
-        <RoadTabs
+    <Tabs defaultValue="highways" className="flex flex-col h-full">
+      <div className="px-2 pt-2 shrink-0">
+        <TabsList className="w-full">
+          <TabsTrigger value="highways" className="flex-1">高速道路</TabsTrigger>
+          <TabsTrigger value="national-routes" className="flex-1">国道</TabsTrigger>
+        </TabsList>
+      </div>
+      <TabsContent value="highways" className="flex-1 overflow-hidden mt-0">
+        <HighwayList
           highways={highways}
           groups={groups}
-          selectedHighwayIds={selectedHighwayIds}
+          selectedIds={selectedHighwayIds}
+          showCoastline={showCoastline}
+          isLoading={isLoadingHighways}
           highwayColors={highwayColors}
-          isLoadingHighways={isLoadingHighways}
           onToggleHighway={onToggleHighway}
           onSetHighwayColor={onSetHighwayColor}
-          onSetHighwayGroupColor={onSetHighwayGroupColor}
-          onSelectAllHighways={onSelectAllHighways}
-          onDeselectAllHighways={onDeselectAllHighways}
-          nationalRoutes={nationalRoutes}
-          nationalRouteGroups={nationalRouteGroups}
-          selectedNationalRouteIds={selectedNationalRouteIds}
-          nationalRouteColors={nationalRouteColors}
-          isLoadingNationalRoutes={isLoadingNationalRoutes}
-          onToggleNationalRoute={onToggleNationalRoute}
-          onSetNationalRouteColor={onSetNationalRouteColor}
-          onSetNationalRouteGroupColor={onSetNationalRouteGroupColor}
-          onSelectAllNationalRoutes={onSelectAllNationalRoutes}
-          onDeselectAllNationalRoutes={onDeselectAllNationalRoutes}
-          showCoastline={showCoastline}
+          onSetGroupColor={onSetHighwayGroupColor}
+          onSelectAll={onSelectAllHighways}
+          onDeselectAll={onDeselectAllHighways}
           onToggleCoastline={onToggleCoastline}
         />
-      </SheetContent>
-    </Sheet>
+      </TabsContent>
+      <TabsContent value="national-routes" className="flex-1 overflow-hidden mt-0">
+        <NationalRouteList
+          routes={nationalRoutes}
+          groups={nationalRouteGroups}
+          selectedIds={selectedNationalRouteIds}
+          showCoastline={showCoastline}
+          isLoading={isLoadingNationalRoutes}
+          routeColors={nationalRouteColors}
+          onToggleRoute={onToggleNationalRoute}
+          onSetRouteColor={onSetNationalRouteColor}
+          onSetGroupColor={onSetNationalRouteGroupColor}
+          onSelectAll={onSelectAllNationalRoutes}
+          onDeselectAll={onDeselectAllNationalRoutes}
+          onToggleCoastline={onToggleCoastline}
+        />
+      </TabsContent>
+    </Tabs>
   );
 }
