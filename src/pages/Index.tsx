@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { Header } from '@/components/Header';
 import { Sidebar } from '@/components/Sidebar';
 import { MobileDrawer } from '@/components/MobileDrawer';
@@ -27,10 +27,10 @@ const Index = () => {
   const [highwayColors, setHighwayColors] = useState<Record<string, string>>({});
   const [nationalRouteColors, setNationalRouteColors] = useState<Record<string, string>>({});
 
-  const highways = highwaysData?.highways ?? [];
-  const groups = groupsData?.groups ?? [];
-  const nationalRoutes = nationalRoutesData?.nationalRoutes ?? [];
-  const nationalRouteGroups = nationalRouteGroupsData?.groups ?? [];
+  const highways = useMemo(() => highwaysData?.highways ?? [], [highwaysData]);
+  const groups = useMemo(() => groupsData?.groups ?? [], [groupsData]);
+  const nationalRoutes = useMemo(() => nationalRoutesData?.nationalRoutes ?? [], [nationalRoutesData]);
+  const nationalRouteGroups = useMemo(() => nationalRouteGroupsData?.groups ?? [], [nationalRouteGroupsData]);
 
   // Highway handlers
   const handleToggleHighway = useCallback((id: string) => {
