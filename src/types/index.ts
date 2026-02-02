@@ -22,6 +22,29 @@ export interface GroupIndex {
   groups: Group[];
 }
 
+export interface NationalRoute {
+  id: string;
+  name: string;
+  nameEn: string;
+  ref: string;
+  fileSize: number;
+  updatedAt: string;
+  group: string;
+}
+
+export interface NationalRouteIndex {
+  nationalRoutes: NationalRoute[];
+}
+
+export interface NationalRouteGroup {
+  name: string;
+  order: number;
+}
+
+export interface NationalRouteGroupIndex {
+  groups: NationalRouteGroup[];
+}
+
 export interface AppState {
   highways: Highway[];
   selectedHighwayIds: Set<string>;

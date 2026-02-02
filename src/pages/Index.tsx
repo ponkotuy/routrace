@@ -1,10 +1,11 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { Header } from '@/components/Header';
 import { Sidebar } from '@/components/Sidebar';
 import { MobileDrawer } from '@/components/MobileDrawer';
 import { MapView } from '@/components/MapView';
 import { InfoModal } from '@/components/InfoModal';
 import { useHighwaysIndex, useGroupsIndex } from '@/hooks/useHighways';
+import { useNationalRoutesIndex, useNationalRouteGroupsIndex } from '@/hooks/useNationalRoutes';
 import { useCoastline } from '@/hooks/useCoastline';
 import { useExportImage } from '@/hooks/useExportImage';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -13,20 +14,27 @@ const Index = () => {
   const isMobile = useIsMobile();
   const { data: highwaysData, isLoading: isLoadingHighways } = useHighwaysIndex();
   const { data: groupsData, isLoading: isLoadingGroups } = useGroupsIndex();
+  const { data: nationalRoutesData, isLoading: isLoadingNationalRoutes } = useNationalRoutesIndex();
+  const { data: nationalRouteGroupsData, isLoading: isLoadingNationalRouteGroups } = useNationalRouteGroupsIndex();
   const { data: coastlineData } = useCoastline();
   const { exportImage } = useExportImage();
 
-  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [selectedHighwayIds, setSelectedHighwayIds] = useState<Set<string>>(new Set());
+  const [selectedNationalRouteIds, setSelectedNationalRouteIds] = useState<Set<string>>(new Set());
   const [showCoastline, setShowCoastline] = useState(true);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   const [highwayColors, setHighwayColors] = useState<Record<string, string>>({});
+  const [nationalRouteColors, setNationalRouteColors] = useState<Record<string, string>>({});
 
-  const highways = highwaysData?.highways ?? [];
-  const groups = groupsData?.groups ?? [];
+  const highways = useMemo(() => highwaysData?.highways ?? [], [highwaysData]);
+  const groups = useMemo(() => groupsData?.groups ?? [], [groupsData]);
+  const nationalRoutes = useMemo(() => nationalRoutesData?.nationalRoutes ?? [], [nationalRoutesData]);
+  const nationalRouteGroups = useMemo(() => nationalRouteGroupsData?.groups ?? [], [nationalRouteGroupsData]);
 
+  // Highway handlers
   const handleToggleHighway = useCallback((id: string) => {
-    setSelectedIds(prev => {
+    setSelectedHighwayIds(prev => {
       const next = new Set(prev);
       if (next.has(id)) {
         next.delete(id);
@@ -44,7 +52,7 @@ const Index = () => {
     });
   }, []);
 
-  const handleSetGroupColor = useCallback((ids: string[], color: string) => {
+  const handleSetHighwayGroupColor = useCallback((ids: string[], color: string) => {
     setHighwayColors(prev => {
       let changed = false;
       const next = { ...prev };
@@ -58,14 +66,57 @@ const Index = () => {
     });
   }, []);
 
-  const handleSelectAll = useCallback(() => {
-    setSelectedIds(new Set(highways.map(h => h.id)));
+  const handleSelectAllHighways = useCallback(() => {
+    setSelectedHighwayIds(new Set(highways.map(h => h.id)));
   }, [highways]);
 
-  const handleDeselectAll = useCallback(() => {
-    setSelectedIds(new Set());
+  const handleDeselectAllHighways = useCallback(() => {
+    setSelectedHighwayIds(new Set());
   }, []);
 
+  // National route handlers
+  const handleToggleNationalRoute = useCallback((id: string) => {
+    setSelectedNationalRouteIds(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+      return next;
+    });
+  }, []);
+
+  const handleSetNationalRouteColor = useCallback((id: string, color: string) => {
+    setNationalRouteColors(prev => {
+      if (prev[id] === color) return prev;
+      return { ...prev, [id]: color };
+    });
+  }, []);
+
+  const handleSetNationalRouteGroupColor = useCallback((ids: string[], color: string) => {
+    setNationalRouteColors(prev => {
+      let changed = false;
+      const next = { ...prev };
+      for (const id of ids) {
+        if (next[id] !== color) {
+          next[id] = color;
+          changed = true;
+        }
+      }
+      return changed ? next : prev;
+    });
+  }, []);
+
+  const handleSelectAllNationalRoutes = useCallback(() => {
+    setSelectedNationalRouteIds(new Set(nationalRoutes.map(r => r.id)));
+  }, [nationalRoutes]);
+
+  const handleDeselectAllNationalRoutes = useCallback(() => {
+    setSelectedNationalRouteIds(new Set());
+  }, []);
+
+  // Shared handlers
   const handleToggleCoastline = useCallback(() => {
     setShowCoastline(prev => !prev);
   }, []);
@@ -85,15 +136,25 @@ const Index = () => {
   const sidebarProps = {
     highways,
     groups,
-    selectedIds,
-    showCoastline,
-    isLoading: isLoadingHighways || isLoadingGroups,
+    selectedHighwayIds,
     highwayColors,
+    isLoadingHighways: isLoadingHighways || isLoadingGroups,
     onToggleHighway: handleToggleHighway,
     onSetHighwayColor: handleSetHighwayColor,
-    onSetGroupColor: handleSetGroupColor,
-    onSelectAll: handleSelectAll,
-    onDeselectAll: handleDeselectAll,
+    onSetHighwayGroupColor: handleSetHighwayGroupColor,
+    onSelectAllHighways: handleSelectAllHighways,
+    onDeselectAllHighways: handleDeselectAllHighways,
+    nationalRoutes,
+    nationalRouteGroups,
+    selectedNationalRouteIds,
+    nationalRouteColors,
+    isLoadingNationalRoutes: isLoadingNationalRoutes || isLoadingNationalRouteGroups,
+    onToggleNationalRoute: handleToggleNationalRoute,
+    onSetNationalRouteColor: handleSetNationalRouteColor,
+    onSetNationalRouteGroupColor: handleSetNationalRouteGroupColor,
+    onSelectAllNationalRoutes: handleSelectAllNationalRoutes,
+    onDeselectAllNationalRoutes: handleDeselectAllNationalRoutes,
+    showCoastline,
     onToggleCoastline: handleToggleCoastline,
   };
 
@@ -114,8 +175,11 @@ const Index = () => {
           coastlineData={coastlineData}
           showCoastline={showCoastline}
           highways={highways}
-          selectedIds={selectedIds}
+          selectedHighwayIds={selectedHighwayIds}
           highwayColors={highwayColors}
+          nationalRoutes={nationalRoutes}
+          selectedNationalRouteIds={selectedNationalRouteIds}
+          nationalRouteColors={nationalRouteColors}
         />
       </div>
 

@@ -1,4 +1,4 @@
-import { Highway } from '@/types';
+import { Highway, NationalRoute } from '@/types';
 
 interface ParsedRef {
   prefix: string;
@@ -50,4 +50,10 @@ export function compareRef(a: Highway, b: Highway): number {
   if (parsedA.suffix !== '' && parsedB.suffix === '') return 1;
 
   return parsedA.suffix.localeCompare(parsedB.suffix);
+}
+
+export function compareNationalRouteRef(a: NationalRoute, b: NationalRoute): number {
+  const numA = parseInt(a.ref, 10) || Infinity;
+  const numB = parseInt(b.ref, 10) || Infinity;
+  return numA - numB;
 }

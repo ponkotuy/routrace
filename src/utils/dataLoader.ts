@@ -1,6 +1,14 @@
-import { HighwayIndex, GroupIndex } from '@/types';
+import { HighwayIndex, GroupIndex, NationalRouteIndex, NationalRouteGroupIndex } from '@/types';
 import { LOCAL_ENDPOINTS } from './constants';
-import { fetchCoastline, fetchHighwayData, fetchHighwaysIndex, fetchGroupsIndex } from './api';
+import {
+  fetchCoastline,
+  fetchHighwayData,
+  fetchHighwaysIndex,
+  fetchGroupsIndex,
+  fetchNationalRoutesIndex,
+  fetchNationalRouteGroupsIndex,
+  fetchNationalRouteData,
+} from './api';
 
 const isDev = import.meta.env.DEV;
 
@@ -38,4 +46,16 @@ export async function loadHighwayData(id: string): Promise<GeoJSON.FeatureCollec
 
 export async function loadCoastline(): Promise<GeoJSON.FeatureCollection> {
   return tryLocalFirst(LOCAL_ENDPOINTS.coastline, fetchCoastline);
+}
+
+export async function loadNationalRoutesIndex(): Promise<NationalRouteIndex> {
+  return tryLocalFirst(LOCAL_ENDPOINTS.nationalRoutesIndex, fetchNationalRoutesIndex);
+}
+
+export async function loadNationalRouteGroupsIndex(): Promise<NationalRouteGroupIndex> {
+  return tryLocalFirst(LOCAL_ENDPOINTS.nationalRouteGroupsIndex, fetchNationalRouteGroupsIndex);
+}
+
+export async function loadNationalRouteData(id: string): Promise<GeoJSON.FeatureCollection> {
+  return tryLocalFirst(LOCAL_ENDPOINTS.nationalRoute(id), () => fetchNationalRouteData(id));
 }

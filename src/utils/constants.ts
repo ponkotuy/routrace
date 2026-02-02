@@ -7,6 +7,9 @@ export const ENDPOINTS = {
   groupsIndex: `${API_BASE_URL}/highways/group.json`,
   highway: (id: string) => `${API_BASE_URL}/highways/${id}.json`,
   metadata: `${API_BASE_URL}/metadata.json`,
+  nationalRoutesIndex: `${API_BASE_URL}/national-roads/index.json`,
+  nationalRouteGroupsIndex: `${API_BASE_URL}/national-roads/group.json`,
+  nationalRoute: (id: string) => `${API_BASE_URL}/national-roads/${id}.json`,
 } as const;
 
 export const LOCAL_ENDPOINTS = {
@@ -15,6 +18,9 @@ export const LOCAL_ENDPOINTS = {
   groupsIndex: `${LOCAL_DATA_PATH}/highways/group.json`,
   highway: (id: string) => `${LOCAL_DATA_PATH}/highways/${id}.json`,
   metadata: `${LOCAL_DATA_PATH}/metadata.json`,
+  nationalRoutesIndex: `${LOCAL_DATA_PATH}/national-roads/index.json`,
+  nationalRouteGroupsIndex: `${LOCAL_DATA_PATH}/national-roads/group.json`,
+  nationalRoute: (id: string) => `${LOCAL_DATA_PATH}/national-roads/${id}.json`,
 } as const;
 
 export const MAP_CONFIG = {
@@ -31,7 +37,8 @@ export const COASTLINE_STYLE = {
   fillOpacity: 0,
 } as const;
 
-export const DEFAULT_HIGHWAY_COLOR = '#4a90d9';
+export const DEFAULT_HIGHWAY_COLOR = '#42b883';
+export const DEFAULT_NATIONAL_ROUTE_COLOR = '#f2c94c';
 export const HIGHWAY_COLOR_OPTIONS = [
   '#4a90d9',
   '#e24a4a',
