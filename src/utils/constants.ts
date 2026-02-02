@@ -37,8 +37,8 @@ export const COASTLINE_STYLE = {
   fillOpacity: 0,
 } as const;
 
-export const DEFAULT_HIGHWAY_COLOR = '#4a90d9';
-export const DEFAULT_NATIONAL_ROUTE_COLOR = '#e24a4a';
+export const DEFAULT_HIGHWAY_COLOR = '#42b883';
+export const DEFAULT_NATIONAL_ROUTE_COLOR = '#f2c94c';
 export const HIGHWAY_COLOR_OPTIONS = [
   '#4a90d9',
   '#e24a4a',
