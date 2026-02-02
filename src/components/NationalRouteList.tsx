@@ -173,6 +173,8 @@ export function NationalRouteList({
                     type="button"
                     onClick={() => toggleGroupExpand(groupName)}
                     className="p-0.5 hover:bg-secondary rounded"
+                    aria-label={`${groupName}を${isExpanded ? '折りたたむ' : '展開する'}`}
+                    aria-expanded={isExpanded}
                   >
                     {isExpanded ? (
                       <ChevronDown className="w-4 h-4 text-muted-foreground" />
