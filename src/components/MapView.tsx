@@ -76,6 +76,8 @@ export function MapView({
               data={query.data}
               name={`${highway.refDisplay} ${highway.name}`}
               color={highwayColors[highway.id] ?? DEFAULT_HIGHWAY_COLOR}
+              label={highway.refDisplay}
+              roadType="highway"
             />
           );
         })}
@@ -91,6 +93,8 @@ export function MapView({
               data={query.data}
               name={route.name}
               color={nationalRouteColors[route.id] ?? DEFAULT_NATIONAL_ROUTE_COLOR}
+              label={route.ref}
+              roadType="national"
             />
           );
         })}

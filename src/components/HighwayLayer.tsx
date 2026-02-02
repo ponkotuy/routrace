@@ -1,5 +1,7 @@
-import { GeoJSON, Tooltip } from 'react-leaflet';
+import { GeoJSON } from 'react-leaflet';
 import { HIGHWAY_STYLE, HIGHWAY_HOVER_STYLE } from '@/utils/constants';
+import { RoadLabelsLayer } from './RoadLabelsLayer';
+import type { RoadType } from './RoadLabel';
 import type { PathOptions, LeafletMouseEvent } from 'leaflet';
 
 interface HighwayLayerProps {
@@ -7,9 +9,11 @@ interface HighwayLayerProps {
   data: GeoJSON.FeatureCollection;
   name: string;
   color: string;
+  label: string;
+  roadType: RoadType;
 }
 
-export function HighwayLayer({ id, data, name, color }: HighwayLayerProps) {
+export function HighwayLayer({ id, data, name, color, label, roadType }: HighwayLayerProps) {
   const style: PathOptions = {
     ...HIGHWAY_STYLE,
     color,
@@ -39,12 +43,19 @@ export function HighwayLayer({ id, data, name, color }: HighwayLayerProps) {
   };
 
   return (
-    <GeoJSON
-      key={id}
-      data={data}
-      style={style}
-      onEachFeature={onEachFeature}
-    />
+    <>
+      <GeoJSON
+        key={id}
+        data={data}
+        style={style}
+        onEachFeature={onEachFeature}
+      />
+      <RoadLabelsLayer
+        data={data}
+        label={label}
+        roadType={roadType}
+      />
+    </>
   );
 }
 

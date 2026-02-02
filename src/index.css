@@ -164,3 +164,36 @@
 .leaflet-tooltip::before {
   border-top-color: hsl(var(--foreground)) !important;
 }
+
+/* Road label styles */
+.road-label {
+  background: transparent !important;
+  border: none !important;
+}
+
+.highway-sign-wrapper {
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Highway sign (green square with white text) */
+.highway-sign {
+  display: inline-block;
+  background-color: #006b3c;
+  color: white;
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-size: 12px;
+  font-weight: bold;
+  white-space: nowrap;
+  border: 1.5px solid white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+}
+
+/* National route sign (blue inverted triangle / onigiri shape) */
+.national-route-sign {
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
+  pointer-events: none;
+}

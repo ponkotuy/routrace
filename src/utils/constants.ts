@@ -58,3 +58,7 @@ export const HIGHWAY_STYLE = {
 export const HIGHWAY_HOVER_STYLE = {
   weight: 3,
 } as const;
+
+export const ROAD_LABEL_CONFIG = {
+  minZoom: 7,
+} as const;
