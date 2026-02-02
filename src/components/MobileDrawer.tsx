@@ -1,4 +1,4 @@
-import { Highway, Group, NationalRoute, NationalRouteGroup } from '@/types';
+import { Highway, Group, NationalRoute, NationalRouteGroup, StatusMarker } from '@/types';
 import { RoadTabs } from './RoadTabs';
 import { Sheet, SheetContent } from '@/components/ui/sheet';
 
@@ -28,6 +28,15 @@ interface MobileDrawerProps {
   // Shared props
   showCoastline: boolean;
   onToggleCoastline: () => void;
+  // Per-route label/status
+  highwayShowLabels: Record<string, boolean>;
+  highwayStatusMarkers: Record<string, StatusMarker>;
+  onSetHighwayShowLabel: (id: string, show: boolean) => void;
+  onSetHighwayStatusMarker: (id: string, marker: StatusMarker) => void;
+  nationalRouteShowLabels: Record<string, boolean>;
+  nationalRouteStatusMarkers: Record<string, StatusMarker>;
+  onSetNationalRouteShowLabel: (id: string, show: boolean) => void;
+  onSetNationalRouteStatusMarker: (id: string, marker: StatusMarker) => void;
   isOpen: boolean;
   onClose: () => void;
 }
@@ -55,6 +64,14 @@ export function MobileDrawer({
   onDeselectAllNationalRoutes,
   showCoastline,
   onToggleCoastline,
+  highwayShowLabels,
+  highwayStatusMarkers,
+  onSetHighwayShowLabel,
+  onSetHighwayStatusMarker,
+  nationalRouteShowLabels,
+  nationalRouteStatusMarkers,
+  onSetNationalRouteShowLabel,
+  onSetNationalRouteStatusMarker,
   isOpen,
   onClose,
 }: MobileDrawerProps) {
@@ -84,6 +101,14 @@ export function MobileDrawer({
           onDeselectAllNationalRoutes={onDeselectAllNationalRoutes}
           showCoastline={showCoastline}
           onToggleCoastline={onToggleCoastline}
+          highwayShowLabels={highwayShowLabels}
+          highwayStatusMarkers={highwayStatusMarkers}
+          onSetHighwayShowLabel={onSetHighwayShowLabel}
+          onSetHighwayStatusMarker={onSetHighwayStatusMarker}
+          nationalRouteShowLabels={nationalRouteShowLabels}
+          nationalRouteStatusMarkers={nationalRouteStatusMarkers}
+          onSetNationalRouteShowLabel={onSetNationalRouteShowLabel}
+          onSetNationalRouteStatusMarker={onSetNationalRouteStatusMarker}
         />
       </SheetContent>
     </Sheet>

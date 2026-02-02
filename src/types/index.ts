@@ -45,6 +45,8 @@ export interface NationalRouteGroupIndex {
   groups: NationalRouteGroup[];
 }
 
+export type StatusMarker = 'none' | 'circle' | 'cross';
+
 export interface AppState {
   highways: Highway[];
   selectedHighwayIds: Set<string>;

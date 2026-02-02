@@ -5,7 +5,14 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { NationalRoute } from '@/types';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
+import { Button } from '@/components/ui/button';
+import { Settings2 } from 'lucide-react';
+import { NationalRoute, StatusMarker } from '@/types';
 import { HIGHWAY_COLOR_OPTIONS } from '@/utils/constants';
 import { cn } from '@/lib/utils';
 
@@ -13,27 +20,93 @@ interface NationalRouteItemProps {
   route: NationalRoute;
   isSelected: boolean;
   color: string;
+  showLabel: boolean;
+  statusMarker: StatusMarker;
   onToggle: (id: string) => void;
   onColorChange: (id: string, color: string) => void;
+  onShowLabelChange: (id: string, show: boolean) => void;
+  onStatusMarkerChange: (id: string, marker: StatusMarker) => void;
 }
 
-export function NationalRouteItem({ route, isSelected, color, onToggle, onColorChange }: NationalRouteItemProps) {
+export function NationalRouteItem({
+  route,
+  isSelected,
+  color,
+  showLabel,
+  statusMarker,
+  onToggle,
+  onColorChange,
+  onShowLabelChange,
+  onStatusMarkerChange,
+}: NationalRouteItemProps) {
   return (
-    <div className="flex items-center gap-3 py-2 px-3 rounded-md hover:bg-secondary/50 transition-colors">
+    <div className="flex items-center gap-2 py-2 px-3 rounded-md hover:bg-secondary/50 transition-colors">
       <label
-        className="flex flex-1 items-center gap-3 cursor-pointer"
+        className="flex flex-1 items-center gap-3 cursor-pointer min-w-0"
         htmlFor={`national-route-${route.id}`}
       >
         <Checkbox
           id={`national-route-${route.id}`}
           checked={isSelected}
           onCheckedChange={() => onToggle(route.id)}
-          className="data-[state=checked]:bg-primary data-[state=checked]:border-primary"
+          className="data-[state=checked]:bg-primary data-[state=checked]:border-primary shrink-0"
         />
-        <span className="text-sm font-medium text-foreground">
+        <span className="text-sm font-medium text-foreground truncate">
           {route.name}
         </span>
       </label>
+      <Popover>
+        <PopoverTrigger asChild>
+          <button
+            type="button"
+            className="p-1 hover:bg-secondary rounded shrink-0"
+            aria-label="表示設定"
+          >
+            <Settings2 className="w-3.5 h-3.5 text-muted-foreground" />
+          </button>
+        </PopoverTrigger>
+        <PopoverContent align="end" className="w-48 p-3">
+          <div className="space-y-3">
+            <label className="flex items-center gap-2 cursor-pointer">
+              <Checkbox
+                checked={showLabel}
+                onCheckedChange={(checked) => onShowLabelChange(route.id, !!checked)}
+                className="data-[state=checked]:bg-primary data-[state=checked]:border-primary"
+              />
+              <span className="text-sm">路線番号</span>
+            </label>
+            <div>
+              <span className="text-sm text-muted-foreground block mb-2">マーカー</span>
+              <div className="flex gap-1">
+                <Button
+                  variant={statusMarker === 'none' ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => onStatusMarkerChange(route.id, 'none')}
+                  className="flex-1 text-xs h-7"
+                >
+                  なし
+                </Button>
+                <Button
+                  variant={statusMarker === 'circle' ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => onStatusMarkerChange(route.id, 'circle')}
+                  className="flex-1 text-xs h-7"
+                >
+                  ○
+                </Button>
+                <Button
+                  variant={statusMarker === 'cross' ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => onStatusMarkerChange(route.id, 'cross')}
+                  className="flex-1 text-xs h-7"
+                >
+                  ×
+                </Button>
+              </div>
+            </div>
+          </div>
+        </PopoverContent>
+      </Popover>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <button

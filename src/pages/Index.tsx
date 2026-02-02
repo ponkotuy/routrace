@@ -9,6 +9,7 @@ import { useNationalRoutesIndex, useNationalRouteGroupsIndex } from '@/hooks/use
 import { useCoastline } from '@/hooks/useCoastline';
 import { useExportImage } from '@/hooks/useExportImage';
 import { useIsMobile } from '@/hooks/use-mobile';
+import type { StatusMarker } from '@/types';
 
 const Index = () => {
   const isMobile = useIsMobile();
@@ -26,6 +27,10 @@ const Index = () => {
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   const [highwayColors, setHighwayColors] = useState<Record<string, string>>({});
   const [nationalRouteColors, setNationalRouteColors] = useState<Record<string, string>>({});
+  const [highwayShowLabels, setHighwayShowLabels] = useState<Record<string, boolean>>({});
+  const [highwayStatusMarkers, setHighwayStatusMarkers] = useState<Record<string, StatusMarker>>({});
+  const [nationalRouteShowLabels, setNationalRouteShowLabels] = useState<Record<string, boolean>>({});
+  const [nationalRouteStatusMarkers, setNationalRouteStatusMarkers] = useState<Record<string, StatusMarker>>({});
 
   const highways = useMemo(() => highwaysData?.highways ?? [], [highwaysData]);
   const groups = useMemo(() => groupsData?.groups ?? [], [groupsData]);
@@ -116,6 +121,24 @@ const Index = () => {
     setSelectedNationalRouteIds(new Set());
   }, []);
 
+  // Highway label/status handlers
+  const handleSetHighwayShowLabel = useCallback((id: string, show: boolean) => {
+    setHighwayShowLabels(prev => ({ ...prev, [id]: show }));
+  }, []);
+
+  const handleSetHighwayStatusMarker = useCallback((id: string, marker: StatusMarker) => {
+    setHighwayStatusMarkers(prev => ({ ...prev, [id]: marker }));
+  }, []);
+
+  // National route label/status handlers
+  const handleSetNationalRouteShowLabel = useCallback((id: string, show: boolean) => {
+    setNationalRouteShowLabels(prev => ({ ...prev, [id]: show }));
+  }, []);
+
+  const handleSetNationalRouteStatusMarker = useCallback((id: string, marker: StatusMarker) => {
+    setNationalRouteStatusMarkers(prev => ({ ...prev, [id]: marker }));
+  }, []);
+
   // Shared handlers
   const handleToggleCoastline = useCallback(() => {
     setShowCoastline(prev => !prev);
@@ -156,6 +179,14 @@ const Index = () => {
     onDeselectAllNationalRoutes: handleDeselectAllNationalRoutes,
     showCoastline,
     onToggleCoastline: handleToggleCoastline,
+    highwayShowLabels,
+    highwayStatusMarkers,
+    onSetHighwayShowLabel: handleSetHighwayShowLabel,
+    onSetHighwayStatusMarker: handleSetHighwayStatusMarker,
+    nationalRouteShowLabels,
+    nationalRouteStatusMarkers,
+    onSetNationalRouteShowLabel: handleSetNationalRouteShowLabel,
+    onSetNationalRouteStatusMarker: handleSetNationalRouteStatusMarker,
   };
 
   return (
@@ -177,9 +208,13 @@ const Index = () => {
           highways={highways}
           selectedHighwayIds={selectedHighwayIds}
           highwayColors={highwayColors}
+          highwayShowLabels={highwayShowLabels}
+          highwayStatusMarkers={highwayStatusMarkers}
           nationalRoutes={nationalRoutes}
           selectedNationalRouteIds={selectedNationalRouteIds}
           nationalRouteColors={nationalRouteColors}
+          nationalRouteShowLabels={nationalRouteShowLabels}
+          nationalRouteStatusMarkers={nationalRouteStatusMarkers}
         />
       </div>
 

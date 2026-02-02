@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Highway, Group } from '@/types';
+import { Highway, Group, StatusMarker } from '@/types';
 import { HighwayItem } from './HighwayItem';
 import { LoadingSpinner } from './LoadingSpinner';
 import { Button } from '@/components/ui/button';
@@ -29,6 +29,10 @@ interface HighwayListProps {
   onSelectAll: () => void;
   onDeselectAll: () => void;
   onToggleCoastline: () => void;
+  showLabels: Record<string, boolean>;
+  statusMarkers: Record<string, StatusMarker>;
+  onSetShowLabel: (id: string, show: boolean) => void;
+  onSetStatusMarker: (id: string, marker: StatusMarker) => void;
 }
 
 interface GroupedHighways {
@@ -50,6 +54,10 @@ export function HighwayList({
   onSelectAll,
   onDeselectAll,
   onToggleCoastline,
+  showLabels,
+  statusMarkers,
+  onSetShowLabel,
+  onSetStatusMarker,
 }: HighwayListProps) {
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set());
 
@@ -259,8 +267,12 @@ export function HighwayList({
                         highway={highway}
                         isSelected={selectedIds.has(highway.id)}
                         color={getHighwayColor(highway.id)}
+                        showLabel={showLabels[highway.id] ?? true}
+                        statusMarker={statusMarkers[highway.id] ?? 'none'}
                         onToggle={onToggleHighway}
                         onColorChange={onSetHighwayColor}
+                        onShowLabelChange={onSetShowLabel}
+                        onStatusMarkerChange={onSetStatusMarker}
                       />
                     ))}
                   </div>

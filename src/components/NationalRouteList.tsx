@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { NationalRoute, NationalRouteGroup } from '@/types';
+import { NationalRoute, NationalRouteGroup, StatusMarker } from '@/types';
 import { NationalRouteItem } from './NationalRouteItem';
 import { LoadingSpinner } from './LoadingSpinner';
 import { Button } from '@/components/ui/button';
@@ -29,6 +29,10 @@ interface NationalRouteListProps {
   onSelectAll: () => void;
   onDeselectAll: () => void;
   onToggleCoastline: () => void;
+  showLabels: Record<string, boolean>;
+  statusMarkers: Record<string, StatusMarker>;
+  onSetShowLabel: (id: string, show: boolean) => void;
+  onSetStatusMarker: (id: string, marker: StatusMarker) => void;
 }
 
 interface GroupedRoutes {
@@ -49,6 +53,10 @@ export function NationalRouteList({
   onSelectAll,
   onDeselectAll,
   onToggleCoastline,
+  showLabels,
+  statusMarkers,
+  onSetShowLabel,
+  onSetStatusMarker,
 }: NationalRouteListProps) {
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set());
 
@@ -248,8 +256,12 @@ export function NationalRouteList({
                         route={route}
                         isSelected={selectedIds.has(route.id)}
                         color={getRouteColor(route.id)}
+                        showLabel={showLabels[route.id] ?? true}
+                        statusMarker={statusMarkers[route.id] ?? 'none'}
                         onToggle={onToggleRoute}
                         onColorChange={onSetRouteColor}
+                        onShowLabelChange={onSetShowLabel}
+                        onStatusMarkerChange={onSetStatusMarker}
                       />
                     ))}
                   </div>

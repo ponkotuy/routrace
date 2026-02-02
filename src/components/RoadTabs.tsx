@@ -1,4 +1,4 @@
-import { Highway, Group, NationalRoute, NationalRouteGroup } from '@/types';
+import { Highway, Group, NationalRoute, NationalRouteGroup, StatusMarker } from '@/types';
 import { HighwayList } from './HighwayList';
 import { NationalRouteList } from './NationalRouteList';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -29,6 +29,15 @@ interface RoadTabsProps {
   // Shared props
   showCoastline: boolean;
   onToggleCoastline: () => void;
+  // Per-route label/status
+  highwayShowLabels: Record<string, boolean>;
+  highwayStatusMarkers: Record<string, StatusMarker>;
+  onSetHighwayShowLabel: (id: string, show: boolean) => void;
+  onSetHighwayStatusMarker: (id: string, marker: StatusMarker) => void;
+  nationalRouteShowLabels: Record<string, boolean>;
+  nationalRouteStatusMarkers: Record<string, StatusMarker>;
+  onSetNationalRouteShowLabel: (id: string, show: boolean) => void;
+  onSetNationalRouteStatusMarker: (id: string, marker: StatusMarker) => void;
 }
 
 export function RoadTabs({
@@ -54,6 +63,14 @@ export function RoadTabs({
   onDeselectAllNationalRoutes,
   showCoastline,
   onToggleCoastline,
+  highwayShowLabels,
+  highwayStatusMarkers,
+  onSetHighwayShowLabel,
+  onSetHighwayStatusMarker,
+  nationalRouteShowLabels,
+  nationalRouteStatusMarkers,
+  onSetNationalRouteShowLabel,
+  onSetNationalRouteStatusMarker,
 }: RoadTabsProps) {
   return (
     <Tabs defaultValue="highways" className="flex flex-col h-full">
@@ -77,6 +94,10 @@ export function RoadTabs({
           onSelectAll={onSelectAllHighways}
           onDeselectAll={onDeselectAllHighways}
           onToggleCoastline={onToggleCoastline}
+          showLabels={highwayShowLabels}
+          statusMarkers={highwayStatusMarkers}
+          onSetShowLabel={onSetHighwayShowLabel}
+          onSetStatusMarker={onSetHighwayStatusMarker}
         />
       </TabsContent>
       <TabsContent value="national-routes" className="flex-1 overflow-hidden mt-0">
@@ -93,6 +114,10 @@ export function RoadTabs({
           onSelectAll={onSelectAllNationalRoutes}
           onDeselectAll={onDeselectAllNationalRoutes}
           onToggleCoastline={onToggleCoastline}
+          showLabels={nationalRouteShowLabels}
+          statusMarkers={nationalRouteStatusMarkers}
+          onSetShowLabel={onSetNationalRouteShowLabel}
+          onSetStatusMarker={onSetNationalRouteStatusMarker}
         />
       </TabsContent>
     </Tabs>
