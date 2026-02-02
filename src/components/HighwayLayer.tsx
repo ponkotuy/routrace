@@ -2,6 +2,7 @@ import { GeoJSON } from 'react-leaflet';
 import { HIGHWAY_STYLE, HIGHWAY_HOVER_STYLE } from '@/utils/constants';
 import { RoadLabelsLayer } from './RoadLabelsLayer';
 import type { RoadType } from './RoadLabel';
+import type { StatusMarker } from '@/types';
 import type { PathOptions, LeafletMouseEvent } from 'leaflet';
 
 interface HighwayLayerProps {
@@ -11,9 +12,11 @@ interface HighwayLayerProps {
   color: string;
   label: string;
   roadType: RoadType;
+  showLabel: boolean;
+  statusMarker: StatusMarker;
 }
 
-export function HighwayLayer({ id, data, name, color, label, roadType }: HighwayLayerProps) {
+export function HighwayLayer({ id, data, name, color, label, roadType, showLabel, statusMarker }: HighwayLayerProps) {
   const style: PathOptions = {
     ...HIGHWAY_STYLE,
     color,
@@ -54,6 +57,8 @@ export function HighwayLayer({ id, data, name, color, label, roadType }: Highway
         data={data}
         label={label}
         roadType={roadType}
+        showLabel={showLabel}
+        statusMarker={statusMarker}
       />
     </>
   );

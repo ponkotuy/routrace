@@ -1,6 +1,6 @@
 import { MapContainer, ZoomControl } from 'react-leaflet';
 import { useQueries } from '@tanstack/react-query';
-import { Highway, NationalRoute } from '@/types';
+import { Highway, NationalRoute, StatusMarker } from '@/types';
 import { CoastlineLayer } from './CoastlineLayer';
 import { HighwayLayer } from './HighwayLayer';
 import { MAP_CONFIG, DEFAULT_HIGHWAY_COLOR, DEFAULT_NATIONAL_ROUTE_COLOR } from '@/utils/constants';
@@ -13,9 +13,13 @@ interface MapViewProps {
   highways: Highway[];
   selectedHighwayIds: Set<string>;
   highwayColors: Record<string, string>;
+  highwayShowLabels: Record<string, boolean>;
+  highwayStatusMarkers: Record<string, StatusMarker>;
   nationalRoutes: NationalRoute[];
   selectedNationalRouteIds: Set<string>;
   nationalRouteColors: Record<string, string>;
+  nationalRouteShowLabels: Record<string, boolean>;
+  nationalRouteStatusMarkers: Record<string, StatusMarker>;
 }
 
 export function MapView({
@@ -24,9 +28,13 @@ export function MapView({
   highways,
   selectedHighwayIds,
   highwayColors,
+  highwayShowLabels,
+  highwayStatusMarkers,
   nationalRoutes,
   selectedNationalRouteIds,
   nationalRouteColors,
+  nationalRouteShowLabels,
+  nationalRouteStatusMarkers,
 }: MapViewProps) {
   const selectedHighways = highways.filter(h => selectedHighwayIds.has(h.id));
   const selectedNationalRoutes = nationalRoutes.filter(r => selectedNationalRouteIds.has(r.id));
@@ -78,6 +86,8 @@ export function MapView({
               color={highwayColors[highway.id] ?? DEFAULT_HIGHWAY_COLOR}
               label={highway.refDisplay}
               roadType="highway"
+              showLabel={highwayShowLabels[highway.id] ?? true}
+              statusMarker={highwayStatusMarkers[highway.id] ?? 'none'}
             />
           );
         })}
@@ -95,6 +105,8 @@ export function MapView({
               color={nationalRouteColors[route.id] ?? DEFAULT_NATIONAL_ROUTE_COLOR}
               label={route.ref}
               roadType="national"
+              showLabel={nationalRouteShowLabels[route.id] ?? true}
+              statusMarker={nationalRouteStatusMarkers[route.id] ?? 'none'}
             />
           );
         })}

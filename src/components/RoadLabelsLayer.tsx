@@ -2,6 +2,7 @@ import { useMemo, useState, useCallback } from 'react';
 import { useMapEvents } from 'react-leaflet';
 import type { LatLngBounds } from 'leaflet';
 import { RoadLabel, RoadType } from './RoadLabel';
+import type { StatusMarker } from '@/types';
 import {
   extractCoordinatesFromGeoJSON,
   filterCoordinatesInBounds,
@@ -13,9 +14,11 @@ interface RoadLabelsLayerProps {
   data: GeoJSON.FeatureCollection;
   label: string;
   roadType: RoadType;
+  showLabel: boolean;
+  statusMarker: StatusMarker;
 }
 
-export function RoadLabelsLayer({ data, label, roadType }: RoadLabelsLayerProps) {
+export function RoadLabelsLayer({ data, label, roadType, showLabel, statusMarker }: RoadLabelsLayerProps) {
   const [bounds, setBounds] = useState<LatLngBounds | null>(null);
   const [zoom, setZoom] = useState<number>(0);
 
@@ -56,12 +59,15 @@ export function RoadLabelsLayer({ data, label, roadType }: RoadLabelsLayerProps)
   }, [allCoordinates, bounds, zoom]);
 
   if (!labelPosition) return null;
+  if (!showLabel && statusMarker === 'none') return null;
 
   return (
     <RoadLabel
       position={labelPosition}
       label={label}
       roadType={roadType}
+      showLabel={showLabel}
+      statusMarker={statusMarker}
     />
   );
 }

@@ -1,4 +1,4 @@
-import { Highway, Group, NationalRoute, NationalRouteGroup } from '@/types';
+import { Highway, Group, NationalRoute, NationalRouteGroup, StatusMarker } from '@/types';
 import { RoadTabs } from './RoadTabs';
 
 interface SidebarProps {
@@ -27,6 +27,15 @@ interface SidebarProps {
   // Shared props
   showCoastline: boolean;
   onToggleCoastline: () => void;
+  // Per-route label/status
+  highwayShowLabels: Record<string, boolean>;
+  highwayStatusMarkers: Record<string, StatusMarker>;
+  onSetHighwayShowLabel: (id: string, show: boolean) => void;
+  onSetHighwayStatusMarker: (id: string, marker: StatusMarker) => void;
+  nationalRouteShowLabels: Record<string, boolean>;
+  nationalRouteStatusMarkers: Record<string, StatusMarker>;
+  onSetNationalRouteShowLabel: (id: string, show: boolean) => void;
+  onSetNationalRouteStatusMarker: (id: string, marker: StatusMarker) => void;
 }
 
 export function Sidebar({
@@ -52,6 +61,14 @@ export function Sidebar({
   onDeselectAllNationalRoutes,
   showCoastline,
   onToggleCoastline,
+  highwayShowLabels,
+  highwayStatusMarkers,
+  onSetHighwayShowLabel,
+  onSetHighwayStatusMarker,
+  nationalRouteShowLabels,
+  nationalRouteStatusMarkers,
+  onSetNationalRouteShowLabel,
+  onSetNationalRouteStatusMarker,
 }: SidebarProps) {
   return (
     <aside className="w-[280px] bg-card border-r border-border flex flex-col shrink-0 h-full">
@@ -78,6 +95,14 @@ export function Sidebar({
         onDeselectAllNationalRoutes={onDeselectAllNationalRoutes}
         showCoastline={showCoastline}
         onToggleCoastline={onToggleCoastline}
+        highwayShowLabels={highwayShowLabels}
+        highwayStatusMarkers={highwayStatusMarkers}
+        onSetHighwayShowLabel={onSetHighwayShowLabel}
+        onSetHighwayStatusMarker={onSetHighwayStatusMarker}
+        nationalRouteShowLabels={nationalRouteShowLabels}
+        nationalRouteStatusMarkers={nationalRouteStatusMarkers}
+        onSetNationalRouteShowLabel={onSetNationalRouteShowLabel}
+        onSetNationalRouteStatusMarker={onSetNationalRouteStatusMarker}
       />
     </aside>
   );
