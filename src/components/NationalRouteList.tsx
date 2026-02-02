@@ -149,24 +149,14 @@ export function NationalRouteList({
     <div className="flex flex-col h-full">
       <div className="px-4 py-3 border-b border-border">
         <h2 className="font-semibold text-foreground mb-3">国道を選択</h2>
-        <div className="flex gap-2">
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={onSelectAll}
-            className="flex-1 text-xs"
-          >
-            全選択
-          </Button>
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={onDeselectAll}
-            className="flex-1 text-xs"
-          >
-            全解除
-          </Button>
-        </div>
+        <Button
+          variant="secondary"
+          size="sm"
+          onClick={onDeselectAll}
+          className="w-full text-xs"
+        >
+          全解除
+        </Button>
       </div>
 
       <ScrollArea className="flex-1">
