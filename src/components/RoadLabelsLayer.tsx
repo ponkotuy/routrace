@@ -59,14 +59,18 @@ export function RoadLabelsLayer({ data, label, roadType, showLabel, statusMarker
   }, [allCoordinates, bounds, zoom]);
 
   if (!labelPosition) return null;
-  if (!showLabel && statusMarker === 'none') return null;
+
+  // Don't show label if label text is empty
+  const effectiveShowLabel = showLabel && label.trim() !== '';
+
+  if (!effectiveShowLabel && statusMarker === 'none') return null;
 
   return (
     <RoadLabel
       position={labelPosition}
       label={label}
       roadType={roadType}
-      showLabel={showLabel}
+      showLabel={effectiveShowLabel}
       statusMarker={statusMarker}
     />
   );
