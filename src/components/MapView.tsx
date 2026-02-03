@@ -1,4 +1,5 @@
-import { MapContainer, ZoomControl } from 'react-leaflet';
+import { useEffect } from 'react';
+import { MapContainer, ZoomControl, useMap } from 'react-leaflet';
 import { useQueries } from '@tanstack/react-query';
 import { Highway, NationalRoute, StatusMarker } from '@/types';
 import { CoastlineLayer } from './CoastlineLayer';
@@ -6,6 +7,30 @@ import { HighwayLayer } from './HighwayLayer';
 import { MAP_CONFIG, DEFAULT_HIGHWAY_COLOR, DEFAULT_NATIONAL_ROUTE_COLOR } from '@/utils/constants';
 import { loadHighwayData, loadNationalRouteData } from '@/utils/dataLoader';
 import 'leaflet/dist/leaflet.css';
+
+function MapResizeHandler() {
+  const map = useMap();
+
+  useEffect(() => {
+    const container = map.getContainer();
+    const observer = new ResizeObserver(() => {
+      map.invalidateSize();
+    });
+    observer.observe(container);
+
+    // Initial invalidateSize after a short delay for mobile browsers
+    const timeout = setTimeout(() => {
+      map.invalidateSize();
+    }, 100);
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(timeout);
+    };
+  }, [map]);
+
+  return null;
+}
 
 interface MapViewProps {
   coastlineData: GeoJSON.FeatureCollection | undefined;
@@ -66,6 +91,7 @@ export function MapView({
         className="w-full h-full"
         style={{ background: '#ffffff' }}
       >
+        <MapResizeHandler />
         <ZoomControl position="bottomright" />
 
         <CoastlineLayer
