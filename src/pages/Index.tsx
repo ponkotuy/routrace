@@ -8,6 +8,7 @@ import { useHighwaysIndex, useGroupsIndex } from '@/hooks/useHighways';
 import { useNationalRoutesIndex, useNationalRouteGroupsIndex } from '@/hooks/useNationalRoutes';
 import { useCoastline } from '@/hooks/useCoastline';
 import { useExportImage } from '@/hooks/useExportImage';
+import { useDisplayState } from '@/hooks/useDisplayState';
 import { useIsMobile } from '@/hooks/use-mobile';
 import type { StatusMarker } from '@/types';
 
@@ -31,6 +32,27 @@ const Index = () => {
   const [highwayStatusMarkers, setHighwayStatusMarkers] = useState<Record<string, StatusMarker>>({});
   const [nationalRouteShowLabels, setNationalRouteShowLabels] = useState<Record<string, boolean>>({});
   const [nationalRouteStatusMarkers, setNationalRouteStatusMarkers] = useState<Record<string, StatusMarker>>({});
+
+  const { saveState, loadState } = useDisplayState({
+    selectedHighwayIds,
+    highwayColors,
+    highwayShowLabels,
+    highwayStatusMarkers,
+    selectedNationalRouteIds,
+    nationalRouteColors,
+    nationalRouteShowLabels,
+    nationalRouteStatusMarkers,
+    showCoastline,
+    setSelectedHighwayIds,
+    setHighwayColors,
+    setHighwayShowLabels,
+    setHighwayStatusMarkers,
+    setSelectedNationalRouteIds,
+    setNationalRouteColors,
+    setNationalRouteShowLabels,
+    setNationalRouteStatusMarkers,
+    setShowCoastline,
+  });
 
   const highways = useMemo(() => highwaysData?.highways ?? [], [highwaysData]);
   const groups = useMemo(() => groupsData?.groups ?? [], [groupsData]);
@@ -197,6 +219,8 @@ const Index = () => {
         onMenuToggle={handleMenuToggle}
         isMenuOpen={isDrawerOpen}
         isMobile={isMobile}
+        onSaveState={saveState}
+        onLoadState={loadState}
       />
 
       <div className="flex-1 flex overflow-hidden">

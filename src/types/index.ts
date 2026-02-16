@@ -47,6 +47,20 @@ export interface NationalRouteGroupIndex {
 
 export type StatusMarker = 'none' | 'circle' | 'cross';
 
+export interface RouteDisplaySettings {
+  selected: boolean;
+  color: string;
+  showLabel: boolean;
+  statusMarker: StatusMarker;
+}
+
+export interface DisplayState {
+  version: 1;
+  showCoastline: boolean;
+  highways: Record<string, Partial<RouteDisplaySettings>>;
+  nationalRoutes: Record<string, Partial<RouteDisplaySettings>>;
+}
+
 export interface AppState {
   highways: Highway[];
   selectedHighwayIds: Set<string>;
